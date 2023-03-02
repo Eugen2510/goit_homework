@@ -8,6 +8,12 @@ public class Circle extends Shape{
     private final int radius;
 
     public Circle(int radius){
+        if(radius <= 0){
+            System.out.println("Wrong parameters");
+            name = "none";
+            this.radius = 0;
+            return;
+        }
         name = "circle";
         this.radius = radius;
     }
@@ -53,10 +59,4 @@ public class Circle extends Shape{
 
 
 
-}
-
-class CircleTest{
-    public static void main(String[] args) {
-
-    }
 }

@@ -8,18 +8,15 @@ public class Rectangle extends Shape{
     private int height;
 
     public Rectangle (int width, int height){
-        if (width == 0 || height == 0){
-            System.out.println("This is not rectangle");
+        if (width <= 0 || height <= 0){
+            System.out.println("Wrong parameters");
             name = "none";
             return;
         }
 
         this.width = width;
         this.height = height;
-//        if (height == width) {
-//            name = "quad";
-//            return;
-//        }
+
         name = "rectangle";
     }
 
@@ -72,17 +69,6 @@ public class Rectangle extends Shape{
 
     private int [] findMaxMinSide(){
         return new int[]{Math.max(height,width), Math.min(height,width)};
-    }
-
-    public static void main (String [] args){
-        Rectangle r1 = new Rectangle(2,3);
-        Rectangle r2 = new Rectangle(3,2);
-        Circle c1 = new Circle(9);
-        System.out.println(r1.equals(c1));
-        System.out.println(r1.equals(r2));
-        System.out.println(r1.hashCode());
-        System.out.println(r2.hashCode());
-
     }
 
 }

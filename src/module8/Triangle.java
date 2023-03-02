@@ -10,8 +10,8 @@ public class Triangle extends Shape{
 
     public Triangle(int a, int b, int c){
         if (!isTriangle(a,b,c)) {
-            System.out.println("such a triangle cannot be created");
-            name = "not triangle";
+            System.out.println("wrong parameters");
+            name = "none";
             type = "";
             sideA = 0;
             sideB = 0;
@@ -117,17 +117,6 @@ public class Triangle extends Shape{
     }
 
     private boolean isTriangle(int a, int b, int c){
-       return (a + b > c && b + c > a && a + c > b);
-    }
-}
-
-class TriangleTest{
-    public static void main (String [] args){
-        Triangle t1 = new Triangle(3,3,5);
-        Triangle t2 = new Triangle(3,5,3);
-        System.out.println(t1.equals(t2));
-        System.out.println(t1.hashCode());
-        System.out.println(t2.hashCode());
-        System.out.println(t1);
+       return (a > 0 && b > 0 && c > 0 && a + b > c && b + c > a && a + c > b);
     }
 }
