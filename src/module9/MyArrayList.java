@@ -104,7 +104,7 @@ public class MyArrayList <T>{
                 sb.append(array[start]);
                 break;
             }
-            sb.append(array[start++] + ", ");
+            sb.append(array[start++]).append(", ");
         }
         return sb.append("]").toString();
     }
@@ -112,7 +112,7 @@ public class MyArrayList <T>{
 
 class MyArrayListTest{
     public static  void main (String [] args){
-        MyArrayList <String> list = new MyArrayList();
+        MyArrayList <String> list = new MyArrayList<>();
         System.out.println("list size before el add = " + list.size() +"\n");
         list.add("Java");
         list.add("is the");
