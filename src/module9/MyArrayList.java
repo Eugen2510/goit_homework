@@ -129,9 +129,10 @@ class MyArrayListTest{
             System.out.println(list.get(i));
         }
 
-        list.remove(3);
-        list.remove(list.size()-1);
-        list.remove(0);
+        System.out.println();
+        System.out.println("you removed - " + list.remove(3));
+        System.out.println("you removed - " + list.remove(list.size() - 1));
+        System.out.println("you removed - " + list.remove(0));
 
         System.out.println("\nafter remove\nyour list: " + list);
         System.out.println("list size after el remove = " + list.size());
@@ -163,8 +164,8 @@ class MyArrayListTest{
         System.out.println("list size after el add = " + list.size());
 
         System.out.println("\nremove elements by value");
-        list.remove("first");
-        list.remove("false element");
+        System.out.println("is removing element in your list? - " + list.remove("first"));
+        System.out.println("is removing element in your list? - " + list.remove("false element"));
         System.out.println("after remove\nyour list: " + list);
         System.out.println("list size after el remove = " + list.size());
     }
