@@ -1,6 +1,6 @@
 package module9;
 
-public class MyArrayList <T>{
+public class MyArrayList <T> implements MyList<T>{
     private static final int DEFAULT_CAPACITY = 10;
 
     private Object[] array;
@@ -42,13 +42,16 @@ public class MyArrayList <T>{
         }
     }
 
-    public Object remove (int index){
-        if(this.size < index
-                || this.size == 0
+    private void isIndexOk(int index){
+        if(this.size <= index
                 || index < 0){
             throw new IndexOutOfBoundsException("Index " + index +
                     " out of bounds for length " + size());
         }
+    }
+
+    public Object remove (int index){
+        isIndexOk(index);
         Object toRemove = array[index];
         Object [] withoutToRemove = new Object[array.length];
         System.arraycopy(array,0,withoutToRemove,0, index);
@@ -81,12 +84,7 @@ public class MyArrayList <T>{
     }
 
     public Object get(int index){
-        if(this.size < index
-                || this.size == 0
-                || index < 0){
-            throw new IndexOutOfBoundsException("Index " + index +
-                    " out of bounds for length " + size());
-        }
+        isIndexOk(index);
         return array[index];
     }
 
@@ -112,61 +110,74 @@ public class MyArrayList <T>{
 
 class MyArrayListTest{
     public static  void main (String [] args){
-        MyArrayList <String> list = new MyArrayList<>();
-        System.out.println("list size before el add = " + list.size() +"\n");
-        list.add("Java");
-        list.add("is the");
-        list.add("best");
-        list.add("programming");
-        list.add("language");
+//        MyArrayList <String> list = new MyArrayList<>();
+//        System.out.println("list size before el add = " + list.size() +"\n");
+//        list.add("Java");
+//        list.add("is the");
+//        list.add("best");
+//        list.add("programming");
+//        list.add("language");
+//
+//        System.out.println("list after elements add:");
+//        System.out.println("your list: " + list);
+//        System.out.println("list size after el add = " + list.size());
+//
+//        System.out.println("\nget list elements test: ");
+//        for (int i = 0; i < list.size(); i++){
+//            System.out.println(list.get(i));
+//        }
+//
+//        System.out.println();
+//        System.out.println("you removed - " + list.remove(3));
+//        System.out.println("you removed - " + list.remove(list.size() - 1));
+//        System.out.println("you removed - " + list.remove(0));
+//
+//        System.out.println("\nafter remove\nyour list: " + list);
+//        System.out.println("list size after el remove = " + list.size());
+//
+//        list.clear();
+//
+//        System.out.println("\nafter clear\nyour list: " + list);
+//        System.out.println("list size after clear = " + list.size());
+//
+//        for (int i = 0; i < list.size(); i++){
+//            System.out.println(list.get(i));
+//        }
+//
+//        System.out.println("\ntrying to remove element from empty list ");
+//        try {
+//            list.remove(0);
+//        }catch (IndexOutOfBoundsException e){
+//            System.out.println(e.getMessage());
+//        }
+//
+//        System.out.println("\nfill list new elements, by index & value");
+//        list.add(0,"Hello");
+//        list.add("my");
+//        list.add("name");
+//        list.add("is");
+//        list.add(4,"Eugene");
+//        list.add(2,"first");
+//        System.out.println("your list: " + list);
+//        System.out.println("list size after el add = " + list.size());
+//
+//        System.out.println("\nremove elements by value");
+//        System.out.println("is removing element in your list? - " + list.remove("first"));
+//        System.out.println("is removing element in your list? - " + list.remove("false element"));
+//        System.out.println("after remove\nyour list: " + list);
+//        System.out.println("list size after el remove = " + list.size());
 
-        System.out.println("list after elements add:");
-        System.out.println("your list: " + list);
-        System.out.println("list size after el add = " + list.size());
-
-        System.out.println("\nget list elements test: ");
-        for (int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-        System.out.println();
-        System.out.println("you removed - " + list.remove(3));
-        System.out.println("you removed - " + list.remove(list.size() - 1));
-        System.out.println("you removed - " + list.remove(0));
-
-        System.out.println("\nafter remove\nyour list: " + list);
-        System.out.println("list size after el remove = " + list.size());
-
-        list.clear();
-
-        System.out.println("\nafter clear\nyour list: " + list);
-        System.out.println("list size after clear = " + list.size());
-
-        for (int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-        System.out.println("\ntrying to remove element from empty list ");
-        try {
-            list.remove(0);
-        }catch (IndexOutOfBoundsException e){
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\nfill list new elements, by index & value");
-        list.add(0,"Hello");
-        list.add("my");
+        MyList <String> list = new MyArrayList<>();
+        list.add("My");
+        System.out.println(list.remove(0));
         list.add("name");
         list.add("is");
-        list.add(4,"Eugene");
-        list.add(2,"first");
-        System.out.println("your list: " + list);
-        System.out.println("list size after el add = " + list.size());
+        list.add("Eugene");
+        list.add(1,"first");
+        list.add(0,"it's all");
+        list.add(0,"");
+        list.add(6,"!");
+        System.out.println(list);
 
-        System.out.println("\nremove elements by value");
-        System.out.println("is removing element in your list? - " + list.remove("first"));
-        System.out.println("is removing element in your list? - " + list.remove("false element"));
-        System.out.println("after remove\nyour list: " + list);
-        System.out.println("list size after el remove = " + list.size());
     }
 }
