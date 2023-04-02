@@ -50,9 +50,9 @@ public class MyArrayList <T> implements MyList<T>{
         }
     }
 
-    public Object remove (int index){
+    public T remove (int index){
         isIndexOk(index);
-        Object toRemove = array[index];
+        T toRemove = (T)array[index];
         Object [] withoutToRemove = new Object[array.length];
         System.arraycopy(array,0,withoutToRemove,0, index);
         System.arraycopy(array,index+1,withoutToRemove,index, array.length-index-1);
@@ -83,9 +83,9 @@ public class MyArrayList <T> implements MyList<T>{
         return size;
     }
 
-    public Object get(int index){
+    public T get(int index){
         isIndexOk(index);
-        return array[index];
+        return (T)array[index];
     }
 
     public void clear(){

@@ -26,6 +26,18 @@ public class MyLinkedList<T> implements MyList<T>{
         size++;
     }
 
+    public void addFirst(T value){
+        Node <T> newNode = new Node<>(value);
+        if (isEmpty()){
+            last = newNode;
+        }else {
+            newNode.setNext(first);
+            first.setPrev(newNode);
+        }
+        first = newNode;
+        size++;
+    }
+
     @Override
     public void add(int index, T value) {
         if (index == size){
@@ -35,11 +47,16 @@ public class MyLinkedList<T> implements MyList<T>{
         throwException(index);
         Node<T> newNode = new Node<>(value);
         Node<T> current = getNode(index);
+            if(index == 0){
+                addFirst(value);
+                size--;
+            }else {
+                newNode.setPrev(current.getPrev());
+                newNode.setNext(current);
+                current.getPrev().setNext(newNode);
+                current.setPrev(newNode);
+            }
 
-            newNode.setPrev(current.getPrev());
-            newNode.setNext(current);
-            current.getPrev().setNext(newNode);
-            current.setPrev(newNode);
         size++;
     }
     @Override
@@ -48,8 +65,7 @@ public class MyLinkedList<T> implements MyList<T>{
         Node<T> current = getNode(index);
         T value = current.getElement();
         if(size == 1){
-            first = last = null;
-            size--;
+            clear();
             return value;
         }
 
@@ -106,6 +122,7 @@ public class MyLinkedList<T> implements MyList<T>{
 
     @Override
     public String toString() {
+        if(isEmpty()) return "[]";
         Node<T> current = first;
         int start = 0;
         StringBuilder listToString = new StringBuilder("[");
@@ -126,23 +143,15 @@ public class MyLinkedList<T> implements MyList<T>{
 class MyLinkedListTest{
     public static void main(String[] args) {
         MyLinkedList<Integer> list = new MyLinkedList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-//        System.out.println(list);
-//        list.remove(1);
-//        System.out.println(list);
-//        list.add(1,2);
-//        System.out.println(list);
-        list.add(4,5);
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.addFirst(4);
+        list.add(0,5);
+        System.out.println(list.size());
+//        list.remove(0);
         System.out.println(list);
-        System.out.println(list.last.getElement());
-        System.out.println(list.last.getPrev().getElement());
-        System.out.println(list.last.getPrev().getPrev().getElement());
-        System.out.println(list.last.getPrev().getPrev().getPrev().getElement());
-        System.out.println(list.last.getPrev().getPrev().getPrev().getPrev().getElement());
-        System.out.println(list.last.getPrev().getPrev().getPrev().getPrev().getPrev());
+
 
     }
 }
