@@ -1,7 +1,7 @@
 package module9;
 
 public class Node <T>{
-    private T element;
+    private final T element;
     private Node<T> prev;
     private Node<T> next;
     public Node(T element){

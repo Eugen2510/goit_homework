@@ -36,15 +36,15 @@ public class Ellipse extends Shape{
 
     @Override
     public double calcArea(){
-        double a = bigAxis/2;
-        double b = smallAxis/2;
+        double a = (double) bigAxis/2;
+        double b = (double) smallAxis/2;
         return PI*a*b;
     }
 
     @Override
     public double calcPerimeter(){
-        double a = bigAxis/2;
-        double b = smallAxis/2;
+        double a = (double) bigAxis/2;
+        double b = (double) smallAxis/2;
         return 4*(PI*a*b + Math.pow(a-b,2))/(a + b);
     }
 

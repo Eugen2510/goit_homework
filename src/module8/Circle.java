@@ -32,6 +32,7 @@ public class Circle extends Shape{
         return PI*radius*radius;
     }
 
+    @Override
     public double calcPerimeter(){
         return 2*PI*radius;
     }

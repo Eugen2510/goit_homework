@@ -1,47 +1,62 @@
 package module9;
 
-public class MyArrayList <T> implements MyList<T>{
-    private static final int DEFAULT_CAPACITY = 10;
+import java.util.StringJoiner;
 
-    private Object[] array;
-    private int size;
+public class MyArrayList <T> implements MyList<T>{
+    private static final int DEFAULT_CAPACITY = 10;//розмір масиву за замовчанням
+
+    private Object[] array;//масив на базі якого організовано MyArrayList
+    private int size;//розмір MyArrayList
 
     public MyArrayList (){
         array = new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
-    //
+    /*
+    метод для додавання елементів в кінець MyArrayList
+     */
+    @Override
     public void add(T value){
-        isSizeOk();
+        isSizeOk();// метод перевірить чи достатній розмір для додання елементу, якщо ні то збільшить розмір поля array, а після додасть елемент
         array[size++] = value;
     }
 
+    /*
+    метод для додання елементу в MyArrayList за індексом всі наступні елементи з тим
+    чий індекс дорівнює індексу вставки будуть зміщені на 1 праворуч
+     */
     public void add(int index,T value){
-        if(this.size < index
+        if(this.size < index                //викинемо виключення, якщо індекс не валідний
                 || index < 0){
             throw new IndexOutOfBoundsException("Index " + index +
                     " out of bounds for length " + size());
         }
-        isSizeOk();
+        isSizeOk();//перевіряємо чи достатній розмір масиву
         Object [] newArray = new Object[array.length];
-        System.arraycopy(array,0,newArray,0, index);
-        newArray[index] = value;
-        System.arraycopy(array,index,newArray,index+1, array.length-index-1);
+        System.arraycopy(array,0,newArray,0, index);//копіюємо елементи до індексу
+        newArray[index] = value;//присвоюємо значення за індексом
+        System.arraycopy(array,index,newArray,index+1, array.length-index-1);//копіюємо решту елементів
         array = newArray;
         this.size++;
     }
 
+    /*
+    службовий метод, що перевіряє розмір масиву, за необхідності збільшує його в 1,5 рази
+     */
     private void isSizeOk(){
         if (size == array.length -1){
             System.out.println("size = " + array.length);
-            Object [] newArray = new Object[array.length + array.length/2];
+            Object [] newArray = new Object[(int)(array.length*1.5)];
             System.arraycopy(array,0,newArray,0, array.length);
             array = newArray;
             System.out.println("size = " + array.length);
         }
     }
 
+    /*
+    службовий метод, що перевіряє індекс для вставки/видалення в разі невалідності, кидає виключення
+     */
     private void isIndexOk(int index){
         if(this.size <= index
                 || index < 0){
@@ -50,8 +65,12 @@ public class MyArrayList <T> implements MyList<T>{
         }
     }
 
+    /*
+    Метод для видалення елементу за індексом, поверне елемент, що був видалений
+     */
+    @Override
     public T remove (int index){
-        isIndexOk(index);
+        isIndexOk(index);// в разі невалідності індекса викинеться виключення
         T toRemove = (T)array[index];
         Object [] withoutToRemove = new Object[array.length];
         System.arraycopy(array,0,withoutToRemove,0, index);
@@ -62,6 +81,9 @@ public class MyArrayList <T> implements MyList<T>{
         return toRemove;
     }
 
+    /*
+    метод що видаляє елемент за значенням поверне true, якщо елемент існував в листі і був видалений і false, якщо ні
+     */
     public boolean remove (T value){
         boolean isT = false;
         int indexT = 0;
@@ -79,15 +101,27 @@ public class MyArrayList <T> implements MyList<T>{
         return isT;
     }
 
+    /*
+    поверне розмір колекції
+     */
+    @Override
     public int size(){
         return size;
     }
 
+    /*
+    поверне елемент за індексом
+     */
+    @Override
     public T get(int index){
         isIndexOk(index);
         return (T)array[index];
     }
 
+    /*
+    очистити колекцію
+     */
+    @Override
     public void clear(){
         array = new Object[DEFAULT_CAPACITY];
         size = 0;
@@ -96,88 +130,58 @@ public class MyArrayList <T> implements MyList<T>{
     @Override
     public String toString() {
         int start = 0;
-        StringBuilder sb = new StringBuilder("[");
+        StringJoiner sj = new StringJoiner(", ");
         while (start < size){
-            if (start == size -1){
-                sb.append(array[start]);
-                break;
-            }
-            sb.append(array[start++]).append(", ");
+            sj.add("" + array[start++]);
         }
-        return sb.append("]").toString();
+        return "[" + sj + "]";
     }
 }
 
 class MyArrayListTest{
     public static  void main (String [] args){
-//        MyArrayList <String> list = new MyArrayList<>();
-//        System.out.println("list size before el add = " + list.size() +"\n");
-//        list.add("Java");
-//        list.add("is the");
-//        list.add("best");
-//        list.add("programming");
-//        list.add("language");
-//
-//        System.out.println("list after elements add:");
-//        System.out.println("your list: " + list);
-//        System.out.println("list size after el add = " + list.size());
-//
-//        System.out.println("\nget list elements test: ");
-//        for (int i = 0; i < list.size(); i++){
-//            System.out.println(list.get(i));
-//        }
-//
-//        System.out.println();
-//        System.out.println("you removed - " + list.remove(3));
-//        System.out.println("you removed - " + list.remove(list.size() - 1));
-//        System.out.println("you removed - " + list.remove(0));
-//
-//        System.out.println("\nafter remove\nyour list: " + list);
-//        System.out.println("list size after el remove = " + list.size());
-//
-//        list.clear();
-//
-//        System.out.println("\nafter clear\nyour list: " + list);
-//        System.out.println("list size after clear = " + list.size());
-//
-//        for (int i = 0; i < list.size(); i++){
-//            System.out.println(list.get(i));
-//        }
-//
-//        System.out.println("\ntrying to remove element from empty list ");
-//        try {
-//            list.remove(0);
-//        }catch (IndexOutOfBoundsException e){
-//            System.out.println(e.getMessage());
-//        }
-//
-//        System.out.println("\nfill list new elements, by index & value");
-//        list.add(0,"Hello");
-//        list.add("my");
-//        list.add("name");
-//        list.add("is");
-//        list.add(4,"Eugene");
-//        list.add(2,"first");
-//        System.out.println("your list: " + list);
-//        System.out.println("list size after el add = " + list.size());
-//
-//        System.out.println("\nremove elements by value");
-//        System.out.println("is removing element in your list? - " + list.remove("first"));
-//        System.out.println("is removing element in your list? - " + list.remove("false element"));
-//        System.out.println("after remove\nyour list: " + list);
-//        System.out.println("list size after el remove = " + list.size());
+        MyArrayList <String> list = new MyArrayList<>();
+        // Додаємо елементи в ліст
+        list.add("Java");
+        list.add("is the");
+        list.add("best");
+        list.add("programming");
+        list.add("language");
+        System.out.println("Ліст після створення і додання 5ти елементів:\n"
+                + list + ". Size = " + list.size());
+        System.out.println();
 
-        MyList <String> list = new MyArrayList<>();
-        list.add("My");
-        System.out.println(list.remove(0));
-        list.add("name");
-        list.add("is");
-        list.add("Eugene");
-        list.add(1,"first");
-        list.add(0,"it's all");
-        list.add(0,"");
-        list.add(6,"!");
-        System.out.println(list);
+
+        System.out.println("Беремо елементи з ліста: ");
+        for (int i = 0; i < list.size(); i++){
+            System.out.println("list.get(" + i +") = " + list.get(i));
+        }
+        System.out.println();
+
+
+        System.out.println("Видаляємо елементи з ліста");
+        System.out.println("you removed - " + list.remove(3));
+        System.out.println("you removed - " + list.remove(list.size() - 1));
+        System.out.println("you removed - " + list.remove(0));
+        System.out.println("Ліст після видалення елементів:\n"
+                + list + ". Size = " + list.size());
+        System.out.println();
+
+        //пробуємо видалити елемент за невалідним індексом
+        System.out.println("Пробуємо видалити елемент за невалідним індексом - 2 при довжині 2:");
+        try {
+            list.remove(2);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println();
+
+        //очищаємо ліст
+        list.clear();
+        System.out.println("Очищаємо ліст");
+        System.out.println("Ліст після очищення:\n"
+                + list + ". Size = " + list.size());
+        System.out.println();
 
     }
 }
