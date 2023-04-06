@@ -5,8 +5,18 @@ import java.util.StringJoiner;
 
 public class MyHashMap <K, V> implements MyMap<K, V>{
 
-    private  Node<K,V> [] array = new Node[16];//Масив в якому будуть зберігатися списки елементів мапи
+    private  Node<K,V> [] array;//Масив в якому будуть зберігатися списки елементів мапи
     private int size;//Змінна що зберігає розмір мапи
+    private static final float LOAD_FACTOR = 0.75f;
+    private int limit;
+
+    private int length;
+
+    public MyHashMap(){
+        length = 16;
+        array = new Node[length];
+        limit = (int)(length * 8 * LOAD_FACTOR);
+    }
 
     /*
     Вкладений клас для зберігання значень елементів мапи та організації їх збереження у вигляді однозв'язного списку
@@ -24,11 +34,30 @@ public class MyHashMap <K, V> implements MyMap<K, V>{
         }
     }
 
+    private void resize(){
+        if(size < limit){
+            return;
+        }
+        length = length*2;
+        limit = (int) (length * 8 * LOAD_FACTOR);
+        Node <K,V> []arrayCopy = array;
+        array = new Node[length];
+        for (Node<K,V> node : arrayCopy){
+            Node<K, V> forCopy = node;
+            while (forCopy != null){
+                Node<K, V> add = new Node<>(forCopy.key,forCopy.value);
+                addNode(add);
+                forCopy = forCopy.next;
+            }
+
+        }
+    }
+
     /*
     Службовий метод, що використовується для розрахунку індексу масиву, в який буде покладено елемент
      */
     private int calcIndex(K key){
-        return Objects.hashCode(key) & 15;
+        return Objects.hashCode(key) & length-1;
     }
 
     /*
@@ -72,6 +101,7 @@ public class MyHashMap <K, V> implements MyMap<K, V>{
      */
     @Override
     public void put(K key, V value){
+        resize();
         Node <K, V> newElement = new Node<>(key, value);
 
         /*нода для перевірки чи існує в мапі елемент з ідентичним ключем, посилається на елемент мапи,
@@ -91,7 +121,7 @@ public class MyHashMap <K, V> implements MyMap<K, V>{
      */
     @Override
     public void remove(K key){
-        int index = Objects.hashCode(key) & 15;
+        int index = Objects.hashCode(key) & length-1;
         Node<K, V> beforeRemove = array[index];
         if(beforeRemove == null) {//перевіряємо чи не пустий елемент масиву, який має містити відповідний ключ
             return;
@@ -117,7 +147,9 @@ public class MyHashMap <K, V> implements MyMap<K, V>{
      */
     @Override
     public void clear(){
-        array = new Node[16];
+        length = 16;
+        array = new Node[length];
+        limit = (int)(length * 8 * LOAD_FACTOR);
         size = 0;
     }
 
@@ -143,7 +175,9 @@ public class MyHashMap <K, V> implements MyMap<K, V>{
 
     public String toString(){
         StringJoiner sj = new StringJoiner(", ");
+        int index = 0;
         for (Node<K,V> node : array){
+            sj.add("\n" + index++ + ")\n" );
             if (node == null) {
                 continue;
             }
@@ -160,43 +194,52 @@ public class MyHashMap <K, V> implements MyMap<K, V>{
 
 class MyHashMapTest{
     public static void main(String[] args) {
-        MyHashMap<String, Integer> map = new MyHashMap<>();
+        MyHashMap<Integer, String> map = new MyHashMap<>();
+        for (int i = 0; i < 220; i++){
+            map.put(i, "a"+i);
+        }
+
+        map.put(96, "b");
+        map.put(97, "b");
+        map.put(98, "b");
+        System.out.println(map);
+        System.out.println("map.size() = " + map.size());
         // Додаємо елементи в мапу
-        map.put("Ivanov", 25);
-        map.put("Luhovyi", 36);
-        map.put("Mazurenko", 24);
-        map.put("Masluc", 16);
-        map.put("Danchuk", 34);
-        System.out.println("Мапа після створення і додання 5ти елементів:\n"
-                + map + ". Size = " + map.size());
-        System.out.println();
-
-        //Додаємо елемент з вже існуючим ключем:
-        map.put("Ivanov", 999);
-        System.out.println("Мапа після додання елементу з ключем \"Ivanov\", що вже міститься в мапі:\n"
-                + map + ". Size = " + map.size());
-        System.out.println();
-
-        //Видаляємо елемент з мапи
-        map.remove("Danchuk");
-        System.out.println("Мапа після видалення елементу з ключем \"Danchuk\":\n"
-                + map + ". Size = " + map.size());
-        System.out.println();
-
-        //Беремо значення елементу за ключем
-        System.out.println("map.get(\"Luhovyi\") = " + map.get("Luhovyi"));
-        System.out.println("Після взяття значення елементу за ключем \"Luhovyi\" мапа не змінюється:\n"
-                + map + ". Size = " + map.size());
-        System.out.println();
-
-        //Очищаємо мапу
-        map.clear();
-        System.out.println("Мапа після очищення:\n"
-                + map + ". Size = " + map.size());
-        System.out.println();
-
-
-
+//        map.put("Ivanov", 25);
+//        map.put("Luhovyi", 36);
+//        map.put("Mazurenko", 24);
+//        map.put("Masluc", 16);
+//        map.put("Danchuk", 34);
+//        System.out.println("Мапа після створення і додання 5ти елементів:\n"
+//                + map + ". Size = " + map.size());
+//        System.out.println();
+//
+//        //Додаємо елемент з вже існуючим ключем:
+//        map.put("Ivanov", 999);
+//        System.out.println("Мапа після додання елементу з ключем \"Ivanov\", що вже міститься в мапі:\n"
+//                + map + ". Size = " + map.size());
+//        System.out.println();
+//
+//        //Видаляємо елемент з мапи
+//        map.remove("Danchuk");
+//        System.out.println("Мапа після видалення елементу з ключем \"Danchuk\":\n"
+//                + map + ". Size = " + map.size());
+//        System.out.println();
+//
+//        //Беремо значення елементу за ключем
+//        System.out.println("map.get(\"Luhovyi\") = " + map.get("Luhovyi"));
+//        System.out.println("Після взяття значення елементу за ключем \"Luhovyi\" мапа не змінюється:\n"
+//                + map + ". Size = " + map.size());
+//        System.out.println();
+//
+//        //Очищаємо мапу
+//        map.clear();
+//        System.out.println("Мапа після очищення:\n"
+//                + map + ". Size = " + map.size());
+//        System.out.println();
+//
+//
+//
 
     }
 }
