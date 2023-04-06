@@ -121,7 +121,7 @@ public class MyHashMap <K, V> implements MyMap<K, V>{
      */
     @Override
     public void remove(K key){
-        int index = Objects.hashCode(key) & length-1;
+        int index = calcIndex(key);
         Node<K, V> beforeRemove = array[index];
         if(beforeRemove == null) {//перевіряємо чи не пустий елемент масиву, який має містити відповідний ключ
             return;
@@ -202,8 +202,11 @@ class MyHashMapTest{
         map.put(96, "b");
         map.put(97, "b");
         map.put(98, "b");
+
+        map.remove(97);
         System.out.println(map);
         System.out.println("map.size() = " + map.size());
+        System.out.println("map.get(97) = " + map.get(97));
         // Додаємо елементи в мапу
 //        map.put("Ivanov", 25);
 //        map.put("Luhovyi", 36);
