@@ -206,7 +206,6 @@ class MyHashMapTest{
         map.remove(97);
         System.out.println(map);
         System.out.println("map.size() = " + map.size());
-        System.out.println("map.get(97) = " + map.get(97));
         // Додаємо елементи в мапу
 //        map.put("Ivanov", 25);
 //        map.put("Luhovyi", 36);
