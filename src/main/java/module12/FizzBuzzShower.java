@@ -19,7 +19,7 @@ public class FizzBuzzShower {
         this.n = n;
     }
 
-    public void startTransform(){//запускаємо виконання 
+    public void startTransform(){//запускаємо виконання
         transformer.start();
     }
 
